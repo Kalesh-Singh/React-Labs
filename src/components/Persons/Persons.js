@@ -51,7 +51,6 @@ class Persons extends Component {
         position={index}
         click={() => this.props.click(index)}
         changed={(event) => this.props.changed(event, person.id)}
-        authenticated={this.props.isAuthenticated}
       />;
     });
   }

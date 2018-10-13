@@ -3,9 +3,12 @@ import classes from './App.module.css';
 import Persons from '../components/Persons/Persons'
 import Cockpit from '../components/Cockpit/Cockpit'
 import withClass from '../hoc/withClass'
-import Aux from '../hoc/Aux'
+// import Aux from '../hoc/Aux'
 
 // import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
+
+
+export const AuthContext = React.createContext(false);
 
 class App extends PureComponent {
 
@@ -45,6 +48,21 @@ class App extends PureComponent {
 
   componentDidUpdate() {
     console.log('[UPDATE App.js Inside componentDidUpdate');
+  }
+
+  // New lifecycle methods
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log('[UPDATE App.js] inside getDerivedStateFromProp',
+      nextProps,
+      prevState);
+
+    return prevState;
+  }
+
+  // New lifecycle methods
+  // A good place to save the user's current scrolling position.
+  getSnapshotBeforeUpdate() {
+    console.log('[UPDATE App.js] inside getSnapShotBeforeUpdate');
   }
 
   nameChangedHandler = (event, id) => {
@@ -96,7 +114,6 @@ class App extends PureComponent {
         persons={this.state.persons}
         click={this.deletePersonHandler}
         changed={this.nameChangedHandler}
-        isAuthenticated={this.state.authenticated}
       />;
 
     }
@@ -114,7 +131,7 @@ class App extends PureComponent {
           login={this.loginHandler}
           click={this.togglePersonsHandler}
         />
-        {persons}
+        <AuthContext.Provider value={this.state.authenticated}>{persons}</AuthContext.Provider>
       </>
     );
 
